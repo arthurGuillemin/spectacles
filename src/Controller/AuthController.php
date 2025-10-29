@@ -3,8 +3,9 @@
 namespace App\Controller;
 use App\Core\Controller;
 
-class AdminController extends Controller {
+class AuthController extends Controller {
     public function index(): void {
-        $this->render('admin');
+        $this->render('auth');
     }
 }
+?>
