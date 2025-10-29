@@ -1,0 +1,52 @@
+/spectacles
+│
+├── public/                     
+│   ├── index.php                
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── src/
+│   ├── Controller/              
+│   │   ├── HomeController.php
+│   │   ├── SpectacleController.php
+│   │   ├── ReservationController.php
+│   │   ├── ProfilController.php
+│   │   └── AdminController.php
+│   │
+│   ├── Model/                   
+│   │   ├── Spectacle.php
+│   │   ├── User.php
+│   │   └── Reservation.php
+│   │
+│   ├── Service/                 
+│   │   ├── AuthService.php
+│   │   └── TokenService.php
+│   │
+│   ├── Middleware/             
+│   │   └── IsGranted.php
+│   │
+│   ├── Core/                    
+│   │   ├── Router.php
+│   │   ├── Request.php
+│   │   ├── Response.php
+│   │   ├── Controller.php       
+│   │   └── SessionManager.php
+│   │
+│   └── View/                    
+│       ├── layout.php           
+│       ├── home.php
+│       ├── spectacles.php
+│       ├── spectacle_detail.php
+│       ├── profil.php
+│       ├── reservation.php
+│       └── admin.php
+│
+├── data/                        
+│   ├── spectacles.json
+│   ├── users.json
+│   └── reservations.json
+│
+├── vendor/                      
+│
+└── composer.json               
