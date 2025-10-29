@@ -196,174 +196,64 @@
         }
     </style>
 </head>
-
 <body>
     <a href="/" class="back-link">← Retour à l'accueil</a>
 
     <div class="auth-container">
+        <!-- Connexion -->
         <div class="auth-left">
             <h2 class="auth-section-title">Connexion</h2>
 
-            <form id="login-form" onsubmit="handleLogin(event)">
+            <?php if (!empty($_SESSION['error'])): ?>
+                <div class="error-message"><?= htmlspecialchars($_SESSION['error']) ?></div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+
+            <form method="POST" action="/login">
                 <div class="form-group">
                     <label for="login-email">Adresse email</label>
-                    <input type="email" id="login-email" name="email" required />
+                    <input type="email" id="login-email" name="email" required>
                 </div>
 
                 <div class="form-group">
                     <label for="login-password">Mot de passe</label>
-                    <div class="password-input-container">
-                        <input type="password" id="login-password" name="password" required />
-                        <span class="password-toggle material-symbols-outlined" onclick="togglePassword('login-password', this)">visibility</span>
-                    </div>
+                    <input type="password" id="login-password" name="password" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Se connecter</button>
             </form>
         </div>
 
+        <!-- Inscription -->
         <div class="auth-right">
             <h2 class="auth-section-title">Créer un compte</h2>
 
-            <form id="register-form" onsubmit="handleRegister(event)">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="register-prenom">Prénom</label>
-                        <input type="text" id="register-prenom" name="prenom" required />
-                    </div>
+            <?php if (!empty($_SESSION['success'])): ?>
+                <div class="success-message"><?= htmlspecialchars($_SESSION['success']) ?></div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
 
-                    <div class="form-group">
-                        <label for="register-nom">Nom</label>
-                        <input type="text" id="register-nom" name="nom" required />
-                    </div>
-                </div>
-
+            <form method="POST" action="/signup">
                 <div class="form-group">
-                    <label for="register-username">Nom d'utilisateur</label>
-                    <input type="text" id="register-username" name="username" required />
+                    <label for="register-name">Nom complet</label>
+                    <input type="text" id="register-name" name="name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="register-email">Adresse email</label>
-                    <input type="email" id="register-email" name="email" required />
+                    <input type="email" id="register-email" name="email" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="register-password">Mot de passe (min. 6 caractères)</label>
-                    <div class="password-input-container">
-                        <input type="password" id="register-password" name="password" required minlength="6" />
-                        <span class="password-toggle material-symbols-outlined" onclick="togglePassword('register-password', this)">visibility</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="register-confirm-password">Confirmer le mot de passe</label>
-                    <div class="password-input-container">
-                        <input type="password" id="register-confirm-password" name="confirm_password" required />
-                        <span class="password-toggle material-symbols-outlined" onclick="togglePassword('register-confirm-password', this)">visibility</span>
-                    </div>
+                    <label for="register-password">Mot de passe</label>
+                    <input type="password" id="register-password" name="password" required minlength="6">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Créer mon compte</button>
             </form>
         </div>
     </div>
-
-    <script>
-        // afficher mdp
-        function togglePassword(inputId, toggleElement) {
-            const input = document.getElementById(inputId);
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                toggleElement.textContent = 'visibility_off';
-            } else {
-                input.type = 'password';
-                toggleElement.textContent = 'visibility';
-            }
-        }
-
-        const users = [{
-                id: 1,
-                username: 'admin',
-                email: 'admin@spectacles.fr',
-                password: 'admin123',
-                nom: 'Administrateur',
-                prenom: 'Site'
-            },
-            {
-                id: 2,
-                username: 'utilisateur',
-                email: 'user@spectacles.fr',
-                password: 'user123',
-                nom: 'Dupont',
-                prenom: 'Jean'
-            }
-        ];
-
-        // Connexion
-        function handleLogin(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value.trim();
-
-            if (!email || !password) {
-                return;
-            }
-            const user = users.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-
-                window.location.href = '/';
-            }
-        }
-
-        // Inscription
-        function handleRegister(event) {
-            event.preventDefault();
-
-            const prenom = document.getElementById('register-prenom').value.trim();
-            const nom = document.getElementById('register-nom').value.trim();
-            const username = document.getElementById('register-username').value.trim();
-            const email = document.getElementById('register-email').value.trim();
-            const password = document.getElementById('register-password').value.trim();
-            const confirmPassword = document.getElementById('register-confirm-password').value.trim();
-
-            if (!prenom || !nom || !username || !email || !password || !confirmPassword) {
-                return;
-            }
-            if (password !== confirmPassword) {
-                return;
-            }
-            if (password.length < 6) {
-                return;
-            }
-
-            if (users.find(u => u.email === email)) {
-                return;
-            }
-
-            if (users.find(u => u.username === username)) {
-                return;
-            }
-
-            const newUser = {
-                id: users.length + 1,
-                username,
-                email,
-                password,
-                nom,
-                prenom
-            };
-
-            users.push(newUser);
-
-            localStorage.setItem('currentUser', JSON.stringify(newUser));
-            window.location.href = '/';
-        }
-    </script>
 </body>
+
 
 </html>

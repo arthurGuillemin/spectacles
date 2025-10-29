@@ -4,20 +4,25 @@
         "title": "Concert de Jazz",
         "description": "Un concert de jazz incroyable avec les meilleurs musiciens.",
         "date": "2025-11-30",
-        "location": "Théâtre de la Ville"
+        "location": "Théâtre de la Ville",
+        "price" : 1200
     },
     {
         "id": 2,
         "title": "Pièce de Théâtre",
         "description": "Une pièce moderne et captivante.",
         "date": "2025-12-05",
-        "location": "Salle des Arts"
+        "location": "Salle des Arts",
+        "price" : 1200
+
     },
     {
         "id": 3,
         "title": "Spectacle de Magie",
         "description": "Un spectacle de magie pour toute la famille.",
         "date": "2025-12-10",
-        "location": "Grand Palais"
+        "location": "Grand Palais",
+        "price" : 1200
+
     }
 ]

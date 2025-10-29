@@ -3,7 +3,14 @@
         "id": 1,
         "name": "ArthurLavoiture",
         "email": "arthur@example.com",
-        "password": "hashed_password",
+        "password": "$2y$10$rq3bG9ZPxklhy6U7zq2QGu7rlzB\/4C6IR.FmdZb7Bt1lm5f2RZC5u",
         "role": "user"
+    },
+    {
+        "name": "test",
+        "email": "test@gmail.com",
+        "password": "$2y$12$nFzgRzyVjnCSgnUupkq5ZeOftWyEnMyqt4Wuoq61ZBL3rvPRRaNtu",
+        "role": "user",
+        "id": 2
     }
 ]

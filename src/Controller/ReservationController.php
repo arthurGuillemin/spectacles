@@ -13,7 +13,6 @@ class ReservationController extends Controller {
         $this->reservationModel = new Reservation();
     }
 
-    // Liste des réservations de l'utilisateur connecté
     public function index(): void {
         IsGranted::check(); // protège la route
         session_start();
@@ -45,7 +44,7 @@ class ReservationController extends Controller {
             'date' => date('Y-m-d H:i:s')
         ]);
 
-        header('Location: /reservations');
+        header('Location: /profil');
         exit; 
     }
 }

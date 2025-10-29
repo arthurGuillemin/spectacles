@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Core\Controller;
 use App\Service\AuthService;
 
@@ -11,6 +10,13 @@ class AuthController extends Controller {
 
     public function __construct() {
         $this->authService = new AuthService();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    public function index(): void {
+        $this->render('auth');
     }
 
     public function login(): void {
@@ -19,39 +25,44 @@ class AuthController extends Controller {
 
         try {
             $user = $this->authService->login($email, $password);
-            if (!$user) {
-                throw new \Exception('Identifiants invalides');
-            }
 
-            $token = $this->authService->generateToken($user);
-            $refresh = $this->authService->generateRefreshToken($user['id']);
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'role' => $user['role']
+            ];
 
-            header('Content-Type: application/json');
-            echo json_encode([
-                'user' => $user,
-                'access_token' => $token,
-                'refresh_token' => $refresh
-            ]);
+            header('Location: /profil');
+            exit;
         } catch (\Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => $e->getMessage()]);
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: /auth');
+            exit;
         }
     }
 
-    public function refreshToken(): void {
-        $refreshToken = $_POST['refresh_token'] ?? '';
+    public function signup(): void {
+        $name = $_POST['name'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-        $userId = $this->authService->verifyRefreshToken($refreshToken);
-        if (!$userId) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Refresh token invalide ou expiré']);
-            return;
+        try {
+            $this->authService->signup($name, $email, $password);
+            $_SESSION['success'] = 'Inscription réussie, vous pouvez vous connecter.';
+            header('Location: /auth');
+            exit;
+        } catch (\Exception $e) {
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: /auth');
+            exit;
         }
+    }
 
-        $user = $this->authService->getUserById($userId);
-        $newToken = $this->authService->generateToken($user);
-
-        header('Content-Type: application/json');
-        echo json_encode(['access_token' => $newToken]);
+    public function logout(): void {
+        session_start();
+        session_destroy();
+        header(header: 'Location: /auth');
+        exit;
     }
 }
