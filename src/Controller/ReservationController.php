@@ -14,7 +14,7 @@ class ReservationController extends Controller {
     }
 
     public function index(): void {
-        IsGranted::check(); // protège la route
+        IsGranted::check(); 
         session_start();
         $userId = $_SESSION['user']['id'] ?? null;
 
@@ -27,7 +27,6 @@ class ReservationController extends Controller {
         $this->render('reservation', ['reservations' => $reservations]);
     }
 
-    // Crée une réservation pour l'utilisateur
     public function store(): void {
         session_start();
         $userId = $_SESSION['user']['id'] ?? 1;

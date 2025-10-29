@@ -53,7 +53,7 @@ class AuthService {
             'email' => $user['email'],
             'role' => $user['role'],
             'iat' => time(),
-            'exp' => time() + 3600, // 1h
+            'exp' => time() + 3600, 
         ];
         return JWT::encode($payload, $this->secret, 'HS256');
     }
@@ -73,7 +73,7 @@ class AuthService {
         $tokens = $this->loadRefreshTokens();
         $tokens[$refreshToken] = [
             'user_id' => $userId,
-            'expires_at' => time() + (7 * 24 * 60 * 60) // 7 jours
+            'expires_at' => time() + (7 * 24 * 60 * 60)
         ];
         file_put_contents($this->refreshFile, json_encode($tokens, JSON_PRETTY_PRINT));
         return $refreshToken;
@@ -85,7 +85,6 @@ class AuthService {
 
         $data = $tokens[$refreshToken];
         if ($data['expires_at'] < time()) {
-            // Supprime le token expiré
             unset($tokens[$refreshToken]);
             file_put_contents($this->refreshFile, json_encode($tokens, JSON_PRETTY_PRINT));
             return null;

@@ -47,7 +47,7 @@ class Spectacle {
     public function delete(int $id): bool {
         $spectacles = $this->all();
         $filtered = array_filter($spectacles, fn($s) => $s['id'] !== $id);
-        if (count($filtered) === count($spectacles)) return false; // pas trouvé
+        if (count($filtered) === count($spectacles)) return false;
         file_put_contents($this->file, json_encode(array_values($filtered), JSON_PRETTY_PRINT));
         return true;
     }
