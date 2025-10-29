@@ -230,6 +230,7 @@
                 <div id="userDisplay"></div>
             </div>
         </div>
+
     </nav>
 
     <div class="container">

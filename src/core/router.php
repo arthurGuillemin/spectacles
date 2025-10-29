@@ -26,7 +26,7 @@ public function run(): void {
         call_user_func([$instance, $action]);
     } else {
         http_response_code(404);
-        echo "<h1>404 - Faire une page 404 si le temps</h1>";
+        require __DIR__ . '/../view/404.php';
     }
 }
 
