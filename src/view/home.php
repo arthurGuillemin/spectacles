@@ -10,6 +10,7 @@
         <a href="/profil">Profil</a>
         <a href="/reservations">Réservations</a>
         <a href="/spectacle">Spectacles</a>
+        <a href="/auth">Connexion</a>
     </nav>
 
     <p>page home</p>

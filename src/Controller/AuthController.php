@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Core\Controller;
 use App\Service\AuthService;
 
@@ -17,13 +18,11 @@ class AuthController extends Controller {
         $password = $_POST['password'] ?? '';
 
         try {
-            // 🔹 On vérifie les identifiants
             $user = $this->authService->login($email, $password);
             if (!$user) {
                 throw new \Exception('Identifiants invalides');
             }
 
-            // 🔹 On génère les tokens directement à partir de l’utilisateur
             $token = $this->authService->generateToken($user);
             $refresh = $this->authService->generateRefreshToken($user['id']);
 
