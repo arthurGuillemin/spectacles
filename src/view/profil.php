@@ -57,7 +57,7 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #D9E5EE;
+            background: #f5f5f5;
             color: #2c3e50;
             line-height: 1.6;
             padding: 30px 0;

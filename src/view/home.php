@@ -255,6 +255,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
 
+
 <nav>
     <div class="nav-container">
         <div class="logo">ScènePass</div>
