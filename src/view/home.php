@@ -211,8 +211,6 @@
         <div class="nav-container">
             <div class="logo">ScènePass</div>
             <div class="nav-links">
-                <a href="#accueil">Accueil</a>
-                <a href="#spectacles">Spectacles</a>
                 <div id="userDisplay"></div>
             </div>
         </div>
@@ -249,8 +247,7 @@
                 lieu: "Théâtre du Châtelet, Paris",
                 duree: "2h30",
                 prix: 85,
-                description: "Plongez dans la savane africaine avec cette adaptation spectaculaire du classique Disney. Une expérience visuelle et musicale inoubliable.",
-                placesDisponibles: 45
+                description: "Plongez dans la savane africaine avec cette adaptation spectaculaire du classique Disney. Une expérience visuelle et musicale inoubliable."
             },
             {
                 id: 2,
@@ -260,8 +257,7 @@
                 lieu: "Comédie-Française, Paris",
                 duree: "3h00",
                 prix: 65,
-                description: "La tragédie immortelle de Shakespeare revisitée dans une mise en scène moderne.",
-                placesDisponibles: 120
+                description: "La tragédie immortelle de Shakespeare revisitée dans une mise en scène moderne."
             },
             {
                 id: 3,
@@ -271,8 +267,7 @@
                 lieu: "Palais des Glaces, Paris",
                 duree: "1h45",
                 prix: 35,
-                description: "Une soirée d'humour avec les talents découverts par Jamel Debbouze.",
-                placesDisponibles: 200
+                description: "Une soirée d'humour avec les talents découverts par Jamel Debbouze."
             },
             {
                 id: 4,
@@ -282,8 +277,7 @@
                 lieu: "Philharmonie de Paris",
                 duree: "2h00",
                 prix: 75,
-                description: "L'Orchestre de Paris interprète les plus grands classiques de Beethoven et Mozart.",
-                placesDisponibles: 85
+                description: "L'Orchestre de Paris interprète les plus grands classiques de Beethoven et Mozart."
             },
             {
                 id: 5,
@@ -293,8 +287,7 @@
                 lieu: "Zénith de Paris",
                 duree: "1h30",
                 prix: 55,
-                description: "Le nouveau one-woman-show de Florence Foresti : un regard drôle et piquant sur notre époque.",
-                placesDisponibles: 150
+                description: "Le nouveau one-woman-show de Florence Foresti : un regard drôle et piquant sur notre époque."
             },
             {
                 id: 6,
@@ -304,8 +297,7 @@
                 lieu: "Opéra Garnier, Paris",
                 duree: "2h15",
                 prix: 95,
-                description: "Le chef-d’œuvre de Tchaïkovski interprété par le Ballet de l’Opéra de Paris. Un moment de grâce et d’émotion pure.",
-                placesDisponibles: 60
+                description: "Le chef-d'œuvre de Tchaïkovski interprété par le Ballet de l'Opéra de Paris. Un moment de grâce et d'émotion pure."
             },
             {
                 id: 7,
@@ -315,30 +307,27 @@
                 lieu: "Accor Arena, Paris",
                 duree: "2h00",
                 prix: 70,
-                description: "Un show monumental mêlant tubes incontournables, effets spéciaux et mise en scène spectaculaire.",
-                placesDisponibles: 300
+                description: "Un show monumental mêlant tubes incontournables, effets spéciaux et mise en scène spectaculaire."
             },
             {
                 id: 8,
-                titre: "Harry Potter et l’Enfant Maudit",
+                titre: "Harry Potter et l'Enfant Maudit",
                 categorie: "Théâtre Fantastique",
                 date: "1 Février 2026",
                 lieu: "Théâtre Mogador, Paris",
                 duree: "3h30",
                 prix: 80,
-                description: "L’univers magique de J.K. Rowling prend vie sur scène dans cette pièce époustouflante.",
-                placesDisponibles: 100
+                description: "L'univers magique de J.K. Rowling prend vie sur scène dans cette pièce époustouflante."
             },
             {
                 id: 9,
-                titre: "Les Bodin’s Grandeur Nature",
+                titre: "Les Bodin's Grandeur Nature",
                 categorie: "Comédie",
                 date: "8 Février 2026",
                 lieu: "Zénith de Lille",
                 duree: "2h10",
                 prix: 50,
-                description: "Les Bodin’s reviennent avec leur ferme grandeur nature pour un spectacle hilarant et populaire.",
-                placesDisponibles: 180
+                description: "Les Bodin's reviennent avec leur ferme grandeur nature pour un spectacle hilarant et populaire."
             },
             {
                 id: 10,
@@ -348,8 +337,7 @@
                 lieu: "Casino de Paris",
                 duree: "1h50",
                 prix: 60,
-                description: "Un show fascinant entre réalité et illusion, avec des numéros qui défient l’impossible.",
-                placesDisponibles: 130
+                description: "Un show fascinant entre réalité et illusion, avec des numéros qui défient l'impossible."
             },
             {
                 id: 11,
@@ -359,8 +347,7 @@
                 lieu: "Théâtre Mogador, Paris",
                 duree: "2h50",
                 prix: 90,
-                description: "Revivez l’histoire poignante de Jean Valjean dans cette adaptation musicale culte.",
-                placesDisponibles: 70
+                description: "Revivez l'histoire poignante de Jean Valjean dans cette adaptation musicale culte."
             },
             {
                 id: 12,
@@ -370,8 +357,7 @@
                 lieu: "Arkéa Arena, Bordeaux",
                 duree: "3h00",
                 prix: 65,
-                description: "L’événement musical de l’année avec les plus grands artistes français au profit des Restos du Cœur.",
-                placesDisponibles: 250
+                description: "L'événement musical de l'année avec les plus grands artistes français au profit des Restos du Cœur."
             }
         ];
 
@@ -413,7 +399,6 @@
             if (utilisateur.estConnecte) {
                 reservationArea.innerHTML = `
                     <div class="reservation-section">
-                        <p>Places disponibles : ${spectacle.placesDisponibles}</p>
                         <button class="btn" onclick="reserverPlace(${spectacle.id})">Réserver</button>
                     </div>
                 `;
