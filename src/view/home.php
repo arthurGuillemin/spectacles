@@ -11,6 +11,7 @@
         <a href="/reservations">Réservations</a>
         <a href="/spectacle">Spectacles</a>
         <a href="/auth">Connexion</a>
+        <a href="/admin">Admin</a>
     </nav>
 
     <p>page home</p>

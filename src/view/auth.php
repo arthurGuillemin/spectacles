@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #D9E5EE 100%;
+            background: #f5f5f5;
             display: flex;
             flex-direction: column;
             align-items: center;
