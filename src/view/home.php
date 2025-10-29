@@ -52,6 +52,21 @@
         .nav-links a:hover {
             color: #c48c8cff;
         }
+        .btn-add {
+            padding: 0.6rem 1.2rem;
+            background: #838181ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-add:hover {
+            background: #b07a7a;
+        }
 
         .user-info {
             color: #666;
@@ -211,6 +226,7 @@
         <div class="nav-container">
             <div class="logo">ScènePass</div>
             <div class="nav-links">
+                <button class="btn-add" > Ajouter un spectacle</button>
                 <div id="userDisplay"></div>
             </div>
         </div>
