@@ -1,8 +1,26 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ScènePass</title>
+</head>
+<body>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <title>ScènePass</title>
     <style>
         * {
@@ -50,11 +68,11 @@
         }
 
         .nav-links a:hover {
-            color: #c48c8cff;
+            color: #7c7676ff;
         }
         .btn-add {
             padding: 0.6rem 1.2rem;
-            background: #838181ff;
+            background: #333;
             color: white;
             border: none;
             border-radius: 4px;
@@ -65,12 +83,26 @@
         }
 
         .btn-add:hover {
-            background: #b07a7a;
+            background: #7c7676ff;
         }
 
         .user-info {
             color: #666;
         }
+
+        .btn-user {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            color: #333;
+        }
+
+        .btn-user:hover {
+            color: #7c7676ff;
+        }
+
         
         .container {
             max-width: 1000px;
@@ -222,231 +254,119 @@
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <div class="logo">ScènePass</div>
-            <div class="nav-links">
-                <button class="btn-add" > Ajouter un spectacle</button>
-                <div id="userDisplay"></div>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">ScènePass</div>
+        <div class="nav-links">
+<?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
+            <button class="btn-add">Ajouter un spectacle</button>
+        <?php endif; ?>            <div id="userDisplay"></div>
+            <button class="btn-user" id="userBtn"><i class="fa-solid fa-user"></i></button>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="spectacles-grid" id="spectaclesGrid">
+        <?php foreach ($spectacles as $spectacle): ?>
+            <div class="spectacle-card" onclick="ouvrirFiche(<?= $spectacle['id'] ?>)">
+                <h3 class="spectacle-title"><?= htmlspecialchars($spectacle['title']) ?></h3>
+                <div class="spectacle-info"><?= htmlspecialchars($spectacle['date']) ?></div>
+                <div class="spectacle-info"><?= htmlspecialchars($spectacle['location']) ?></div>
+                <div class="spectacle-price"><?= htmlspecialchars($spectacle['price'] ?? 'N/A') ?>€</div>
+                <button class="btn">Voir les détails</button>
             </div>
-        </div>
-
-    </nav>
-
-    <div class="container">
-        <div class="spectacles-grid" id="spectaclesGrid"></div>
+        <?php endforeach; ?>
     </div>
+</div>
 
-    <div class="modal" id="spectacleModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">×</button>
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="modal-info" id="modalInfo"></div>
-            <div class="modal-description" id="modalDescription"></div>
-            <div class="modal-price" id="modalPrice"></div>
-            <div id="reservationArea"></div>
-        </div>
+<div class="modal" id="spectacleModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-info" id="modalInfo"></div>
+        <div class="modal-description" id="modalDescription"></div>
+        <div class="modal-price" id="modalPrice"></div>
+        <div id="reservationArea"></div>
     </div>
+</div>
 
-    <script>
-        const utilisateur = {
-            estConnecte: true, 
-            nom: "Sophie Martin",
-            prenom: "Sophie"
-        };
+<script>
+    // Injection des données depuis PHP
+    const spectacles = <?= json_encode($spectacles, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
+    const utilisateur = {
+        estConnecte: <?= isset($_SESSION['user']) ? 'true' : 'false' ?>,
+        name: <?= isset($_SESSION['user']['name']) ? json_encode($_SESSION['user']['name']) : '""' ?>
+    };
 
-        const spectacles = [
-            {
-                id: 1,
-                titre: "Le Roi Lion",
-                categorie: "Comédie Musicale",
-                date: "15 Décembre 2025",
-                lieu: "Théâtre du Châtelet, Paris",
-                duree: "2h30",
-                prix: 85,
-                description: "Plongez dans la savane africaine avec cette adaptation spectaculaire du classique Disney. Une expérience visuelle et musicale inoubliable."
-            },
-            {
-                id: 2,
-                titre: "Roméo et Juliette",
-                categorie: "Théâtre",
-                date: "22 Décembre 2025",
-                lieu: "Comédie-Française, Paris",
-                duree: "3h00",
-                prix: 65,
-                description: "La tragédie immortelle de Shakespeare revisitée dans une mise en scène moderne."
-            },
-            {
-                id: 3,
-                titre: "Jamel Comedy Club",
-                categorie: "Humour",
-                date: "28 Décembre 2025",
-                lieu: "Palais des Glaces, Paris",
-                duree: "1h45",
-                prix: 35,
-                description: "Une soirée d'humour avec les talents découverts par Jamel Debbouze."
-            },
-            {
-                id: 4,
-                titre: "Concert Symphonique",
-                categorie: "Musique",
-                date: "5 Janvier 2026",
-                lieu: "Philharmonie de Paris",
-                duree: "2h00",
-                prix: 75,
-                description: "L'Orchestre de Paris interprète les plus grands classiques de Beethoven et Mozart."
-            },
-            {
-                id: 5,
-                titre: "Florence Foresti - Boys Boys Boys",
-                categorie: "Humour",
-                date: "12 Janvier 2026",
-                lieu: "Zénith de Paris",
-                duree: "1h30",
-                prix: 55,
-                description: "Le nouveau one-woman-show de Florence Foresti : un regard drôle et piquant sur notre époque."
-            },
-            {
-                id: 6,
-                titre: "Swan Lake (Le Lac des Cygnes)",
-                categorie: "Danse Classique",
-                date: "20 Janvier 2026",
-                lieu: "Opéra Garnier, Paris",
-                duree: "2h15",
-                prix: 95,
-                description: "Le chef-d'œuvre de Tchaïkovski interprété par le Ballet de l'Opéra de Paris. Un moment de grâce et d'émotion pure."
-            },
-            {
-                id: 7,
-                titre: "Maitre Gims - Les Étoiles Tour",
-                categorie: "Concert",
-                date: "25 Janvier 2026",
-                lieu: "Accor Arena, Paris",
-                duree: "2h00",
-                prix: 70,
-                description: "Un show monumental mêlant tubes incontournables, effets spéciaux et mise en scène spectaculaire."
-            },
-            {
-                id: 8,
-                titre: "Harry Potter et l'Enfant Maudit",
-                categorie: "Théâtre Fantastique",
-                date: "1 Février 2026",
-                lieu: "Théâtre Mogador, Paris",
-                duree: "3h30",
-                prix: 80,
-                description: "L'univers magique de J.K. Rowling prend vie sur scène dans cette pièce époustouflante."
-            },
-            {
-                id: 9,
-                titre: "Les Bodin's Grandeur Nature",
-                categorie: "Comédie",
-                date: "8 Février 2026",
-                lieu: "Zénith de Lille",
-                duree: "2h10",
-                prix: 50,
-                description: "Les Bodin's reviennent avec leur ferme grandeur nature pour un spectacle hilarant et populaire."
-            },
-            {
-                id: 10,
-                titre: "Illusionniste - Le Mystère de la Magie",
-                categorie: "Magie / Illusion",
-                date: "14 Février 2026",
-                lieu: "Casino de Paris",
-                duree: "1h50",
-                prix: 60,
-                description: "Un show fascinant entre réalité et illusion, avec des numéros qui défient l'impossible."
-            },
-            {
-                id: 11,
-                titre: "Les Misérables",
-                categorie: "Comédie Musicale",
-                date: "20 Février 2026",
-                lieu: "Théâtre Mogador, Paris",
-                duree: "2h50",
-                prix: 90,
-                description: "Revivez l'histoire poignante de Jean Valjean dans cette adaptation musicale culte."
-            },
-            {
-                id: 12,
-                titre: "Les Enfoirés 2026",
-                categorie: "Concert Caritatif",
-                date: "5 Mars 2026",
-                lieu: "Arkéa Arena, Bordeaux",
-                duree: "3h00",
-                prix: 65,
-                description: "L'événement musical de l'année avec les plus grands artistes français au profit des Restos du Cœur."
-            }
-        ];
+    console.log(utilisateur);
 
-        function afficherUtilisateur() {
-            const userDisplay = document.getElementById('userDisplay');
-            if (utilisateur.estConnecte) {
-                userDisplay.innerHTML = `<span class="user-info">Bonjour, ${utilisateur.prenom}</span>`;
-            } else {
-                userDisplay.innerHTML = `<a href="#connexion">Se connecter</a>`;
-            }
+    // Affichage du nom de l'utilisateur dans le header
+    function afficherUtilisateur() {
+        const userDisplay = document.getElementById('userDisplay');
+        if (utilisateur.estConnecte) {
+            userDisplay.innerHTML = `<span class="user-info">Bonjour, ${utilisateur.name}</span>`;
+        } else {
+            userDisplay.innerHTML = `<a href="/auth">Se connecter</a>`;
         }
+    }
 
-        function afficherSpectacles() {
-            const grid = document.getElementById('spectaclesGrid');
-            grid.innerHTML = spectacles.map(spectacle => `
-                <div class="spectacle-card" onclick="ouvrirFiche(${spectacle.id})">
-                    <h3 class="spectacle-title">${spectacle.titre}</h3>
-                    <div class="spectacle-info">${spectacle.date}</div>
-                    <div class="spectacle-info">${spectacle.lieu}</div>
-                    <div class="spectacle-price">${spectacle.prix}€</div>
-                    <button class="btn">Voir les détails</button>
-                </div>
-            `).join('');
-        }
+    // Redirection bouton utilisateur
+    const userBtn = document.getElementById('userBtn');
+    userBtn.addEventListener('click', () => {
+        window.location.href = utilisateur.estConnecte ? '/profil' : '/auth';
+    });
 
-        function ouvrirFiche(id) {
-            const spectacle = spectacles.find(s => s.id === id);
-            if (!spectacle) return;
+    // Ouvrir la modale pour un spectacle
+    function ouvrirFiche(id) {
+        const spectacle = spectacles.find(s => s.id === id);
+        if (!spectacle) return;
 
-            document.getElementById('modalTitle').textContent = spectacle.titre;
-            document.getElementById('modalInfo').innerHTML = `
-                <div>${spectacle.date}</div>
-                <div>${spectacle.lieu}</div>
+        document.getElementById('modalTitle').textContent = spectacle.title;
+        document.getElementById('modalInfo').innerHTML = `
+            <div>${spectacle.date}</div>
+            <div>${spectacle.location}</div>
+        `;
+        document.getElementById('modalDescription').textContent = spectacle.description;
+        document.getElementById('modalPrice').textContent = `${spectacle.price ?? 'N/A'}€ / place`;
+
+        const reservationArea = document.getElementById('reservationArea');
+        if (utilisateur.estConnecte) {
+            // Formulaire POST vers ReservationController
+            reservationArea.innerHTML = `
+                <form method="POST" action="/reservations" id="reservationForm">
+                    <input type="hidden" name="spectacle_id" value="${spectacle.id}">
+                    <button type="submit" class="btn">Réserver</button>
+                </form>
             `;
-            document.getElementById('modalDescription').textContent = spectacle.description;
-            document.getElementById('modalPrice').textContent = `${spectacle.prix}€ / place`;
-
-            const reservationArea = document.getElementById('reservationArea');
-            if (utilisateur.estConnecte) {
-                reservationArea.innerHTML = `
-                    <div class="reservation-section">
-                        <button class="btn" onclick="reserverPlace(${spectacle.id})">Réserver</button>
-                    </div>
-                `;
-            } else {
-                reservationArea.innerHTML = `
-                    <div class="login-prompt">
-                        <p>Vous devez être connecté pour réserver.</p>
-                        <a href="#connexion">Se connecter</a>
-                    </div>
-                `;
-            }
-
-            document.getElementById('spectacleModal').classList.add('active');
+        } else {
+            reservationArea.innerHTML = `
+                <div class="login-prompt">
+                    <p>Vous devez être connecté pour réserver.</p>
+                    <a href="/auth">Se connecter</a>
+                </div>
+            `;
         }
 
-        function closeModal() {
-            document.getElementById('spectacleModal').classList.remove('active');
-        }
+        document.getElementById('spectacleModal').classList.add('active');
+    }
 
-        function reserverPlace(id) {
-            const spectacle = spectacles.find(s => s.id === id);
-            alert(`Réservation pour "${spectacle.titre}" confirmée !`);
-            closeModal();
-        }
+    // Fermer la modale
+    function closeModal() {
+        document.getElementById('spectacleModal').classList.remove('active');
+    }
 
-        document.getElementById('spectacleModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+    // Fermer modale si clic hors contenu
+    document.getElementById('spectacleModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
 
-        afficherUtilisateur();
-        afficherSpectacles();
-    </script>
+    // Initialisation
+    afficherUtilisateur();
+</script>
+
 </body>
+
 </html>

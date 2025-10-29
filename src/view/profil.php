@@ -5,11 +5,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mon Profil</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+                nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+
+        
+
+        .user-info {
+            color: #666;
+        }
+
+        .btn-user {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            color: #333;
+        }
+
+        .btn-user:hover {
+            color: #7c7676ff;
         }
 
         body {
@@ -171,131 +214,63 @@
 </head>
 
 <body>
+
+<nav>
+    <div class="nav-container">
+        <a href="/" class="logo">ScènePass</a>
+
+    </div>
+</nav>
     <div class="container">
         <div class="profile-header">
             <h1 class="profile-title">Mon Profil</h1>
-            <div class="profile-info" id="profile-info">
+            <div class="info-group">
+    <label class="info-label">Nom</label>
+    <div class="info-value"><?= htmlspecialchars($user['name'] ?? '') ?></div>
+</div>
+
+<div class="info-group">
+    <label class="info-label">Adresse email</label>
+    <div class="info-value"><?= htmlspecialchars($user['email'] ?? '') ?></div>
+</div>
+
             </div>
         </div>
+
         <div class="reservations-section">
             <h2 class="section-title">Mes Réservations</h2>
             <div id="reservations-container">
+                <?php if (!empty($reservations)): ?>
+                    <div class="reservations-grid">
+                        <?php foreach ($reservations as $res): ?>
+                            <?php
+                            $spectacle = $res['spectacle'] ?? ['title' => 'Spectacle inconnu', 'date' => '', 'location' => ''];
+                            ?>
+                            <div class="reservation-card">
+                                <h3 class="spectacle-name"><?= htmlspecialchars($spectacle['title']) ?></h3>
+                                <div class="spectacle-details">
+                                    <div class="detail-item">
+                                        <span class="detail-icon">📅</span>
+                                        <span><?= date('d/m/Y', strtotime($spectacle['date'] ?? '')) ?></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-icon">📍</span>
+                                        <span><?= htmlspecialchars($spectacle['location'] ?? '') ?></span>
+                                    </div>
+                                    <div class="reservation-status"><?= htmlspecialchars($res['statut'] ?? 'En attente') ?></div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="no-reservations">
+                        <h3>Aucune réservation</h3>
+                        <p>Vous n'avez pas encore de spectacles réservés.</p>
+                        <p><a href="/spectacle">Découvrir les spectacles disponibles</a></p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-
-    <script>
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
-        if (!currentUser.id) {
-            window.location.href = '/auth';
-        }
-
-        const spectacles = [{
-                id: 1,
-                nom: 'Le Roi Lion',
-                date: '2024-12-15',
-                heure: '20h00',
-                lieu: 'Théâtre du Châtelet',
-                description: 'La célèbre comédie musicale de Disney'
-            },
-            {
-                id: 2,
-                nom: 'Les Misérables',
-                date: '2024-12-22',
-                heure: '19h30',
-                lieu: 'Théâtre Mogador',
-                description: 'Le chef-d\'œuvre de Victor Hugo adapté en comédie musicale'
-            },
-            {
-                id: 3,
-                nom: 'Phantom of the Opera',
-                date: '2025-01-10',
-                heure: '20h30',
-                lieu: 'Opéra Garnier',
-                description: 'Le mystérieux fantôme de l\'opéra'
-            }
-        ];
-
-        const reservations = [{
-                spectacle_id: 1,
-                date_reservation: '2024-11-01',
-                statut: 'confirmée'
-            },
-            {
-                spectacle_id: 3,
-                date_reservation: '2024-11-15',
-                statut: 'confirmée'
-            }
-        ];
-
-        // Récupérer spectqcle
-        const spectaclesReserves = [];
-        reservations.forEach(reservation => {
-            const spectacle = spectacles.find(s => s.id === reservation.spectacle_id);
-            if (spectacle) {
-                spectaclesReserves.push({
-                    ...spectacle,
-                    date_reservation: reservation.date_reservation,
-                    statut: reservation.statut
-                });
-            }
-        });
-
-        // Infos profil
-        const profileInfo = document.getElementById('profile-info');
-        profileInfo.innerHTML = `
-            <div class="info-group">
-                <label class="info-label">Prénom</label>
-                <div class="info-value">${currentUser.prenom || 'Non renseigné'}</div>
-            </div>
-            <div class="info-group">
-                <label class="info-label">Nom</label>
-                <div class="info-value">${currentUser.nom || 'Non renseigné'}</div>
-            </div>
-            <div class="info-group">
-                <label class="info-label">Nom d'utilisateur</label>
-                <div class="info-value">${currentUser.username || 'Non renseigné'}</div>
-            </div>
-            <div class="info-group">
-                <label class="info-label">Adresse email</label>
-                <div class="info-value">${currentUser.email || 'Non renseigné'}</div>
-            </div>
-        `;
-
-        // Reservations
-        const reservationsContainer = document.getElementById('reservations-container');
-        if (spectaclesReserves.length > 0) {
-            let reservationsHTML = '<div class="reservations-grid">';
-            spectaclesReserves.forEach(spectacle => {
-                const date = new Date(spectacle.date);
-                const formattedDate = date.toLocaleDateString('fr-FR');
-
-                reservationsHTML += `
-                    <div class="reservation-card" onclick="window.location.href='/spectacle?id=${spectacle.id}'">
-                        <h3 class="spectacle-name">${spectacle.nom}</h3>
-                        <div class="spectacle-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>${formattedDate}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            reservationsHTML += '</div>';
-            reservationsContainer.innerHTML = reservationsHTML;
-        } else {
-            reservationsContainer.innerHTML = `
-                <div class="no-reservations">
-                    <h3>Aucune réservation</h3>
-                    <p>Vous n'avez pas encore de spectacles réservés.</p>
-                    <p><a href="/spectacle">Découvrir les spectacles disponibles</a></p>
-                </div>
-            `;
-        }
-    </script>
-
 </body>
-
 </html>
