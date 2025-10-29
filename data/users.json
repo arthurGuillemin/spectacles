@@ -7,10 +7,17 @@
         "role": "user"
     },
     {
+        "id": 2,
         "name": "test",
         "email": "test@gmail.com",
         "password": "$2y$12$nFzgRzyVjnCSgnUupkq5ZeOftWyEnMyqt4Wuoq61ZBL3rvPRRaNtu",
-        "role": "user",
-        "id": 2
+        "role": "user"
+    },
+    {
+        "name": "admin",
+        "email": "admin@example.com",
+        "password": "$2y$12$6Cc.TbpZQ0fMp0Rm68X0O.hSyodJXDG7pqy9p2sD48iw\/DcprTxwS",
+        "role": "admin",
+        "id": 3
     }
 ]

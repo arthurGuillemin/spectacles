@@ -122,63 +122,36 @@
                 <p class="form-subtitle">Remplissez les informations ci-dessous</p>
             </div>
 
-            <form method="POST" action="/admin">
-                <input type="hidden" name="action" value="add_spectacle">
-                <div class="form-group">
-                    <label for="titre">Titre du spectacle *</label>
-                    <input
-                        type="text"
-                        id="titre"
-                        name="titre"
-                        required
-                        placeholder="Ex: Le Roi Lion, Roméo et Juliette..."
-                        maxlength="255">
-                </div>
+<form method="POST" action="/admin/spectacle">
+    <div class="form-group">
+        <label for="title">Titre du spectacle *</label>
+        <input type="text" id="title" name="title" required placeholder="Ex: Le Roi Lion...">
+    </div>
 
-                <div class="form-group">
-                    <label for="description">Description *</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        required
-                        placeholder="Décrivez le spectacle, son histoire, ses acteurs principaux..."
-                        maxlength="1000"></textarea>
-                </div>
+    <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" name="description" required placeholder="Description du spectacle..."></textarea>
+    </div>
 
-                <div class="form-group">
-                    <label for="lieu">Lieu *</label>
-                    <input
-                        type="text"
-                        id="lieu"
-                        name="lieu"
-                        required
-                        placeholder="Ex: Théâtre du Châtelet, Opéra de Paris..."
-                        maxlength="255">
-                </div>
+    <div class="form-group">
+        <label for="location">Lieu *</label>
+        <input type="text" id="location" name="location" required placeholder="Ex: Théâtre du Châtelet">
+    </div>
 
-                <div class="form-group">
-                    <label for="prix">Prix (€) *</label>
-                    <input
-                        type="number"
-                        id="prix"
-                        name="prix"
-                        required
-                        step="0.01"
-                        min="0"
-                        placeholder="Ex: 89.50">
-                </div>
+    <div class="form-group">
+        <label for="prix">Prix (€) *</label>
+        <input type="number" id="prix" name="price" required step="0.01" min="0" placeholder="Ex: 89.50">
+    </div>
 
-                <div class="form-group">
-                    <label for="date">Date du spectacle *</label>
-                    <input
-                        type="date"
-                        id="date"
-                        name="date"
-                        required>
-                </div>
+    <div class="form-group">
+        <label for="date">Date du spectacle *</label>
+        <input type="date" id="date" name="date" required>
+    </div>
 
-                <button type="submit" class="btn">Créer le spectacle</button>
-            </form>
+    <button type="submit" class="btn">Créer le spectacle</button>
+</form>
+
+
         </div>
     </div>
 </body>

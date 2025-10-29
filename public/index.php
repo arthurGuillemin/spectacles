@@ -27,8 +27,8 @@ $router->get('/login', [AuthController::class, 'loginForm']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
-$router->get('/admin', [AdminController::class, 'index']);
-$router->post('/admin', [AdminController::class, 'index']);
+$router->get('/admin', [AdminController::class, 'index']);       
+$router->post('/admin/spectacle', [AdminController::class, 'store']);
 
 $router->post('/token/refresh', [AuthController::class, 'refreshToken']);
 

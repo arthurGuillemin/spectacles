@@ -266,7 +266,7 @@
                     <div class="no-reservations">
                         <h3>Aucune réservation</h3>
                         <p>Vous n'avez pas encore de spectacles réservés.</p>
-                        <p><a href="/spectacle">Découvrir les spectacles disponibles</a></p>
+                        <p><a href="/">Découvrir les spectacles disponibles</a></p>
                     </div>
                 <?php endif; ?>
             </div>

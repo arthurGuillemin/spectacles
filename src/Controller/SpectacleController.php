@@ -58,6 +58,6 @@ class SpectacleController extends Controller {
             'location' => $location
         ]);
 
-        header('Location: /spectacle');
+        header('Location: /');
     }
 }

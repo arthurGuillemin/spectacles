@@ -257,12 +257,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 <nav>
+    
     <div class="nav-container">
         <div class="logo">ScènePass</div>
         <div class="nav-links">
-<?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
-            <button class="btn-add">Ajouter un spectacle</button>
-        <?php endif; ?>            <div id="userDisplay"></div>
+        
+<?php if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin'): ?>
+            <a href="/admin"><button class="btn-add">Ajouter un spectacle</button></a>
+        <?php endif; ?>            
+        <div id="userDisplay"></div>
             <button class="btn-user" id="userBtn"><i class="fa-solid fa-user"></i></button>
         </div>
     </div>
@@ -295,16 +298,13 @@ if (session_status() === PHP_SESSION_NONE) {
 </div>
 
 <script>
-    // Injection des données depuis PHP
+
     const spectacles = <?= json_encode($spectacles, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
     const utilisateur = {
         estConnecte: <?= isset($_SESSION['user']) ? 'true' : 'false' ?>,
-        name: <?= isset($_SESSION['user']['name']) ? json_encode($_SESSION['user']['name']) : '""' ?>
+        name: <?= isset($_SESSION['user']['name']) ? json_encode($_SESSION['user']['name']) : '""' ?>,
     };
 
-    console.log(utilisateur);
-
-    // Affichage du nom de l'utilisateur dans le header
     function afficherUtilisateur() {
         const userDisplay = document.getElementById('userDisplay');
         if (utilisateur.estConnecte) {
@@ -313,14 +313,11 @@ if (session_status() === PHP_SESSION_NONE) {
             userDisplay.innerHTML = `<a href="/auth">Se connecter</a>`;
         }
     }
-
-    // Redirection bouton utilisateur
     const userBtn = document.getElementById('userBtn');
     userBtn.addEventListener('click', () => {
         window.location.href = utilisateur.estConnecte ? '/profil' : '/auth';
     });
 
-    // Ouvrir la modale pour un spectacle
     function ouvrirFiche(id) {
         const spectacle = spectacles.find(s => s.id === id);
         if (!spectacle) return;
@@ -335,7 +332,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
         const reservationArea = document.getElementById('reservationArea');
         if (utilisateur.estConnecte) {
-            // Formulaire POST vers ReservationController
             reservationArea.innerHTML = `
                 <form method="POST" action="/reservations" id="reservationForm">
                     <input type="hidden" name="spectacle_id" value="${spectacle.id}">
@@ -354,17 +350,14 @@ if (session_status() === PHP_SESSION_NONE) {
         document.getElementById('spectacleModal').classList.add('active');
     }
 
-    // Fermer la modale
     function closeModal() {
         document.getElementById('spectacleModal').classList.remove('active');
     }
 
-    // Fermer modale si clic hors contenu
     document.getElementById('spectacleModal').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
     });
 
-    // Initialisation
     afficherUtilisateur();
 </script>
 
