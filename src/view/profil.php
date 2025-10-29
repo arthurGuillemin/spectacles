@@ -13,6 +13,6 @@
         <a href="/reservations">Réservations</a>
         <a href="/spectacle">Spectacles</a>
     </nav>
-    <p>Page Profil </p>
+    <p>Page Profil</p>
 </body>
 </html>
