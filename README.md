@@ -17,3 +17,7 @@ php -S localhost:8000
 
 
 ou avec votre xamp/mamp/wamp
+
+
+Pour ce conncter en admin uliliser les identifiants suivants :
+admin@example.com ; mot de passe adminadmin
